@@ -1,49 +1,58 @@
-from math import sqrt
-
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+class Agent:
+    def __init__(self, code_name, unit, clearance_level):
+        self.code_name = code_name
+        self.unit = unit
+        self.__clearance_level = clearance_level
         
-    def __str__(self):
-        return f'{self.x}, {self.y}'
-        
-class Line:
-    count = 0
+    def get_clearance_level(self):
+        return self.__clearance_level
     
-    def __init__(self, p1: Point, p2: Point):
-        self.p1 = p1
-        self.p2 = p2
-        self.c()
-               
-    def show(self):
-        print(self.p1, self.p2)
+    def set_clearance_level(self, level: int):
+        if 1 <= level <= 5:    
+            self.__clearance_level = level
         
-    def lenght(self):
-        return sqrt(pow(abs(self.p1.x - self.p2.x), 2) + pow(abs(self.p1.y - self.p2.y), 2))
+    def report(self):
+        print(f'Agent {self.code_name} reporting. Clearance level: {self.get_clearance_level()}')
+
+class Mission:
+    def __init__(self, name, location, agent):
+        self.mission_name = name
+        self.target_location = location
+        self.assigned_agent = agent
+        
+    def brief(self):
+        print(f"Mission: {self.mission_name}, Traget: {self.target_location}, Agent: {self.assigned_agent.code_name}")
+
+class IntelTools:
+    @staticmethod
+    def encrypt_message(msg: str):
+        return msg[::-1]
     
     @classmethod
-    def c(cls):
-        cls.count += 1
+    def log_transmission(cls, agent_name: str, message: str):
+        print(f'{agent_name} sent encrypted message: {IntelTools.encrypt_message(message)}')
+            
+class Report:
+    def __init__(self, summary, urgency_level, agent: Agent):
+        self.summary = summary
+        self.urgency_level = urgency_level
+        self.agent = agent
         
-    def is_horizontal(self):
-        return True if self.p1.x == self.p2.x else False
+class MissionControl:
+    @classmethod
+    def analyze_report(cls, r: Report):
+        if r.urgency_level >= 4:
+            print("Immediate response required.")
+        elif r.urgency_level == 3: 
+            print("High priority. Monitor closely.")
+        else:
+            print("Routine analysis.")
     
-    def is_vertical(self):
-        return True if self.p1.y == self.p2.y else False
-    
-    @staticmethod
-    def privet():
-        print('zdarova')
-        
-    
-p1 = Point(1, 2)
-p2 = Point(3, 4)
 
-l = Line(p1, p2)
+agent_007 = Agent('bond', '8200', 1)
 
-l.show()
+report = Report('gad is terrorist', 5, agent_007)
 
-print(l.lenght())
+MissionControl.analyze_report(report)
 
-Line.privet()
+IntelTools.log_transmission(agent_007.code_name, report.summary)

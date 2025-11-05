@@ -1,0 +1,18 @@
+from abc import ABC, abstractmethod
+
+class Abstract(ABC):
+    pass
+
+    @abstractmethod
+    def qwe():
+        print('father')
+    
+    def tyu():
+        pass
+    
+class Asd(Abstract):
+    @staticmethod
+    def qwe():
+        print('child')  
+    
+a = Abstract()
