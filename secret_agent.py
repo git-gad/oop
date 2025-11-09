@@ -51,10 +51,18 @@ ag3 = FieldAgent('avi', 3, 'Russia')
 
 agents_list = [ag1, ag2, ag3]
  
-def print_reports(agents):
-    for ag in agents:
-        ag.report()
+class AgencyDirector:
+    _instance = None
+    
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
+    def __init__(self, name):
+        self.name = name
         
-print_reports(agents_list)
+ad1 = AgencyDirector('gad')
+ad2 = AgencyDirector('dag')
 
-print(Agent.get_total_agents())
+print(ad1 is ad2)
